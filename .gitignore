@@ -1,0 +1,9 @@
+# generated artifacts
+data_*.json
+report_*.html
+wazuh_week_report_*.pdf
+reports/
+*.pdf
+*.html
+.env
+__pycache__/
