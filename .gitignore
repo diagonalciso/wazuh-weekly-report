@@ -7,3 +7,5 @@ reports/
 *.html
 .env
 __pycache__/
+smtp.env
+.env.local

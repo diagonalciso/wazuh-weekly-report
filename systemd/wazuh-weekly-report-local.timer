@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Wazuh weekly report (on-manager) every Sunday 18:00
+
+[Timer]
+OnCalendar=Sun *-*-* 18:00:00
+Persistent=true
+Unit=wazuh-weekly-report-local.service
+
+[Install]
+WantedBy=timers.target

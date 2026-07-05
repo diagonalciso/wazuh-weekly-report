@@ -34,13 +34,14 @@ ssh -i "$WAZUH_SSH_KEY" -o StrictHostKeyChecking=no \
 log "build HTML"
 python3 "$DIR/build_report.py" "$HTML" < "$JSON" >/dev/null
 
-log "render PDF (chromium)"
-chromium --headless --disable-gpu --no-sandbox --no-pdf-header-footer \
-    --print-to-pdf="$PDF" "file://$HTML" 2>/dev/null
-[ -s "$PDF" ] || { log "FATAL: PDF not produced"; exit 1; }
+log "render PDF"
+ATTACH="$PDF"
+if ! bash "$DIR/render_pdf.sh" "$HTML" "$PDF"; then
+    log "no PDF engine — emailing HTML instead"; ATTACH="$HTML"
+fi
 
 log "email -> $RECIP"
-python3 "$DIR/send_mail.py" "$PDF" "$RECIP"
+python3 "$DIR/send_mail.py" "$ATTACH" "$RECIP"
 
 # rotate: keep newest 8 of each artifact
 ls -t "$DIR"/wazuh_week_report_*.pdf 2>/dev/null | tail -n +9 | xargs -r rm -f

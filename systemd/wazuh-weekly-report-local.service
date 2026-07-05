@@ -1,0 +1,16 @@
+[Unit]
+Description=Wazuh weekly security review — ON-MANAGER (local, no SSH), PDF/HTML, email
+After=network-online.target wazuh-manager.service
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# Runs ON the Wazuh manager. Needs root: install-files tar, agent_control, ossec.log.
+User=root
+Group=root
+WorkingDirectory=/opt/wazuh-weekly-report
+Environment=HOME=/root
+# add /snap/bin only if chromium is the snap build; HTML fallback works with none
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ExecStart=/bin/bash /opt/wazuh-weekly-report/run_local.sh
+TimeoutStartSec=300

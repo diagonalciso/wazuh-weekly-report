@@ -4,7 +4,9 @@ import os, sys, smtplib, ssl
 from email.message import EmailMessage
 from pathlib import Path
 
-ENV = Path.home() / "socops" / ".env"
+# SMTP config source: $SMTP_ENV, else $SOCOPS_ENV, else ~/socops/.env
+ENV = Path(os.getenv("SMTP_ENV") or os.getenv("SOCOPS_ENV")
+           or (Path.home() / "socops" / ".env"))
 cfg = {}
 for line in ENV.read_text().splitlines():
     line = line.strip()
@@ -30,7 +32,11 @@ msg.set_content(
     "-- CisoDiagonal SOC (automated)\n"
 )
 data = Path(pdf).read_bytes()
-msg.add_attachment(data, maintype="application", subtype="pdf", filename=Path(pdf).name)
+if pdf.lower().endswith(".pdf"):
+    maintype, subtype = "application", "pdf"
+else:                                    # HTML fallback (no PDF engine on host)
+    maintype, subtype = "text", "html"
+msg.add_attachment(data, maintype=maintype, subtype=subtype, filename=Path(pdf).name)
 
 ctx = ssl.create_default_context()
 with smtplib.SMTP(host, port) as s:
