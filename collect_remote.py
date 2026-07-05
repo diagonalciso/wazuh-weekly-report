@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
 """Runs ON the Wazuh server (as root, piped via ssh). Emits JSON week-review data to stdout."""
-import json, ssl, subprocess, urllib.request, re
+import os, json, ssl, subprocess, urllib.request, re
 from datetime import datetime, timezone
 
 # admin pw from install-files (never printed)
+INSTALL_TAR = os.getenv("WAZUH_INSTALL_FILES", "/root/wazuh-install-files.tar")
 pw = ""
 try:
     out = subprocess.run(
-        ["tar", "-O", "-xf", "/home/soc/wazuh-install-files.tar",
+        ["tar", "-O", "-xf", INSTALL_TAR,
          "wazuh-install-files/wazuh-passwords.txt"],
         capture_output=True, text=True).stdout
     for ln in out.splitlines():
@@ -34,7 +35,8 @@ def q(body):
 
 rng = {"range": {"@timestamp": {"gte": "now-7d"}}}
 data = {"generated": datetime.now(timezone.utc).astimezone().strftime("%Y-%m-%d %H:%M %Z"),
-        "window_days": 7}
+        "window_days": 7,
+        "host": os.getenv("WAZUH_HOST", "wazuh-manager")}
 
 r = q({"size": 0, "query": rng,
        "aggs": {"lvl": {"terms": {"field": "rule.level", "size": 25, "order": {"_key": "desc"}}}}})

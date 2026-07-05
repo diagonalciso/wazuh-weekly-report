@@ -90,7 +90,7 @@ code{{font-family:"DejaVu Sans Mono",monospace;font-size:9pt;background:#f2f4f7;
 .foot{{margin-top:22px;padding-top:8px;border-top:1px solid #e2e6ec;font-size:8.5pt;color:#7a8494}}
 </style></head><body>
 <h1>Wazuh Weekly Security Review</h1>
-<div class="sub">Host <b>192.0.2.20</b> · window {d.get('window_days',7)} days ·
+<div class="sub">Host <b>{esc(d.get('host','wazuh-manager'))}</b> · window {d.get('window_days',7)} days ·
 generated {esc(d.get('generated',''))} · cluster <span class="{cl_class}">{esc(cl_line)}</span></div>
 
 <div class="grid">

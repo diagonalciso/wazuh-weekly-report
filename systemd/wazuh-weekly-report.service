@@ -1,0 +1,17 @@
+[Unit]
+Description=Wazuh weekly security review — collect from manager, PDF, email
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+# --- adjust to your deploy user / path ---
+User=youruser
+Group=youruser
+WorkingDirectory=/home/youruser/wazuh-weekly-report
+Environment=HOME=/home/youruser
+Environment=XDG_RUNTIME_DIR=/run/user/1000
+# /snap/bin is required if chromium is the snap build
+Environment=PATH=/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/snap/bin
+ExecStart=/bin/bash /home/youruser/wazuh-weekly-report/run.sh
+TimeoutStartSec=300

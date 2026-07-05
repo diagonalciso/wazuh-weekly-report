@@ -24,7 +24,7 @@ msg["From"] = user
 msg["To"] = to
 msg["Subject"] = "Wazuh Weekly Security Review"
 msg.set_content(
-    "Attached: automated weekly Wazuh security review for 192.0.2.20.\n"
+    "Attached: automated weekly Wazuh security review for the configured manager.\n"
     "Covers alert volume, high-severity findings, agent health, sshd hardening\n"
     "drift, external brute-force noise and ingestion health for the past 7 days.\n\n"
     "-- CisoDiagonal SOC (automated)\n"
