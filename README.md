@@ -1,5 +1,7 @@
 # Wazuh Weekly Report
 
+> Automated weekly Wazuh SOC report — PDF summary of alerts and top rules, emailed on a schedule.
+
 Automated weekly **Wazuh security review**: collect from the manager, render a
 one-page executive **PDF** (HTML fallback if no PDF engine), email it, scheduled
 every Sunday 18:00.
